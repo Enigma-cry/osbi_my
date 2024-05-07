@@ -22,7 +22,7 @@
 #define PLATFORM_PLIC_SIZE		(0x200000 + \
 					 (PLATFORM_HART_COUNT * 0x1000))
 #define PLATFORM_PLIC_NUM_SOURCES	128
-#define PLATFORM_HART_COUNT		4
+#define PLATFORM_HART_COUNT		1
 #define PLATFORM_CLINT_ADDR		0x0200000 //correct
 #define PLATFORM_ACLINT_MTIMER_FREQ	10000000
 #define PLATFORM_ACLINT_MSWI_ADDR	(PLATFORM_CLINT_ADDR + \
@@ -62,7 +62,7 @@ static struct aclint_mtimer_data mtimer = {
 /*
  * Platform early initialization.
  */
-static int platform_early_init(bool cold_boot)
+static int my_early_init(bool cold_boot)
 {
 	return 0;
 }
@@ -70,7 +70,7 @@ static int platform_early_init(bool cold_boot)
 /*
  * Platform final initialization.
  */
-static int platform_final_init(bool cold_boot)
+static int my_final_init(bool cold_boot)
 {
 	return 0;
 }
@@ -78,7 +78,7 @@ static int platform_final_init(bool cold_boot)
 /*
  * Initialize the platform console.
  */
-static int platform_console_init(void)
+static int my_console_init(void)
 {
 	/* Example if the generic UART8250 driver is used */
 	return uart8250_init(PLATFORM_UART_ADDR, PLATFORM_UART_INPUT_FREQ,
@@ -88,7 +88,7 @@ static int platform_console_init(void)
 /*
  * Initialize the platform interrupt controller for current HART.
  */
-static int platform_irqchip_init(bool cold_boot)
+static int my_irqchip_init(bool cold_boot)
 {
 	u32 hartid = current_hartid();
 	int ret;
@@ -106,7 +106,7 @@ static int platform_irqchip_init(bool cold_boot)
 /*
  * Initialize IPI for current HART.
  */
-static int platform_ipi_init(bool cold_boot)
+static int my_ipi_init(bool cold_boot)
 {
 	int ret;
 
@@ -123,7 +123,7 @@ static int platform_ipi_init(bool cold_boot)
 /*
  * Initialize platform timer for current HART.
  */
-static int platform_timer_init(bool cold_boot)
+static int my_timer_init(bool cold_boot)
 {
 	int ret;
 
@@ -141,16 +141,16 @@ static int platform_timer_init(bool cold_boot)
  * Platform descriptor.
  */
 const struct sbi_platform_operations platform_ops = {
-	.early_init		= platform_early_init,
-	.final_init		= platform_final_init,
-	.console_init		= platform_console_init,
-	.irqchip_init		= platform_irqchip_init,
-	.ipi_init		= platform_ipi_init,
-	.timer_init		= platform_timer_init
+	.early_init		= my_early_init,
+	.final_init		= my_final_init,
+	.console_init		= my_console_init,
+	.irqchip_init		= my_irqchip_init,
+	.ipi_init		= my_ipi_init,
+	.timer_init		= my_timer_init
 };
 const struct sbi_platform platform = {
 	.opensbi_version	= OPENSBI_VERSION,
-	.platform_version	= SBI_PLATFORM_VERSION(0x0, 0x00),
+	.platform_version	= SBI_PLATFORM_VERSION(0x0, 0x01),
 	.name			= "my",
 	.features		= SBI_PLATFORM_DEFAULT_FEATURES,
 	.hart_count		= 1,
