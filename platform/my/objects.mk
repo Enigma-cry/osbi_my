@@ -17,8 +17,8 @@ platform-objs-y += platform.o
 PLATFORM_RISCV_XLEN = 64
 
 # Blobs to build
-# FW_DYNAMIC=y
-FW_JUMP=y
+FW_DYNAMIC=y
+# FW_JUMP=y
 ifeq ($(PLATFORM_RISCV_XLEN), 32)
  # This needs to be 4MB aligned for 32-bit support
  FW_JUMP_ADDR=0x80400000
